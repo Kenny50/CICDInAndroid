@@ -19,10 +19,11 @@ jobs:
     runs-on: [ macos-latest ]
     steps:
       - uses: actions/checkout@v2
+        with:
+          java-version: '11'
 
       - name: Instrumentation Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          java-version: '11'
           api-level: 29
           script: ./gradlew connectedAndroidTest
