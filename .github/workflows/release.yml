@@ -1,0 +1,26 @@
+name: Production Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build:
+    name: Generate release name
+
+    steps:
+    - name: Commit latest version
+      run: |
+        latest_version="$(git describe --match "[0-9]*\.[0-9]*\.[0-9]*"
+          --abbrev=0 --tags)"
+        change_to="versionName "\"$lstest_version"\""
+        sed -i "0./versionName/{s/.*versionName.*/$change_to/}"
+          buffer-android-app/build.gralde
+        git commit -m "Bump version release for $latest_version" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@main
+      with:
+        branch: release/beta
+        github_token: ${{ secrets.GITHUB_TOKEN }}
